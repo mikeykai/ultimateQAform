@@ -1,6 +1,12 @@
-import { defineParameterType } from '@cucumber/cucumber';
+/* eslint-disable @typescript-eslint/no-var-requires */
+import { defineParameterType, setDefaultTimeout } from '@cucumber/cucumber';
 import { actorCalled, actorInTheSpotlight } from '@serenity-js/core';
 
+setDefaultTimeout(10000000)
+
+if (!process.env.CIRCLECI) {
+    require('dotenv').config({ path: `.env` })
+}
 
 defineParameterType({
     regexp: /[A-Z][a-z]+/,
