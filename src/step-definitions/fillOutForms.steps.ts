@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { Given, Then, When } from '@cucumber/cucumber';
+import { Ensure, equals } from '@serenity-js/assertions'
 import { Actor, Duration } from '@serenity-js/core';
 import { isVisible, Navigate, Text,Wait } from '@serenity-js/web';
 
 import { AutomationPractice } from '../page-objects/AutomationPractice';
+import { FillOutForms } from '../page-objects/FillOutForms';
 import { FillOut } from '../tasks/FillOut';
 import { NavigateTo } from '../tasks/NavigateTo';
 
@@ -45,5 +47,18 @@ When(
 
 Then(
     '{pronoun} should able to submit the two forms successfully',
-    async (actor: Actor) => {}
+    async (actor: Actor) => {
+        const successMessage = 'Thanks for contacting us'
+        await actor.attemptsTo(
+            Ensure.that(
+                Text.of(FillOutForms.leftVerificationMessage()),
+                equals(successMessage)
+            ),
+
+            Ensure.that(
+                Text.of(FillOutForms.rightVerificationMessage()),
+                equals(successMessage)
+            )
+        )
+    }
 )
